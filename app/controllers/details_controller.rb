@@ -11,20 +11,20 @@ class DetailsController < ApplicationController
   # GET /details/1.json
   def show
     @date = @detail.pay_strt_date-1.month
+  
     @end_balance = @detail.loan
     @rate_per_period = @detail.rate / (100 * @detail.term)
     @period = @detail.term
-    @dte = []
-
-    for i in 1..12 do
-      @prev_balance = (@end_balance).round(2)
-      @date = @date+1.month
-      @intrst = (@prev_balance * @rate_per_period).round(2)
-      @total_pay =  (@prev_balance * ((@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1))).round(2)
-      @princpl_pay = (@total_pay - @intrst).round(2)
-      @end_balance = (@prev_balance - @princpl_pay).round(2)
+    @dte, @pb, @pp, @intp, @tp, @eb  = [], [], [], [], [], []
+    for i in 1..(@detail.term) do
+      @pb.push(@prev_balance = (@end_balance).round(2))
+      @dte.push(@date = @date+1.month)
+      @intp.push(@intrst = (@prev_balance * @rate_per_period).round(2))
+      @tp.push(@total_pay =  (@prev_balance * ((@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1))).round(2))
+      @pp.push(@princpl_pay = (@total_pay - @intrst).round(2))
+      @eb.push(@end_balance = (@prev_balance - @princpl_pay).round(2))
       @period = @period - 1
-      @dte.push(@date)   
+
     end
   end
 

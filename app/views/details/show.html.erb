@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+
+<p>
+  <strong>Date:</strong>
+  <% @dte.each do |d| %>
+    <%= d %>
+  <% end %>  
+</p>
+
+<p>
+  <strong>Previous Balance:</strong>
+  <%= @prev_balance %>
+</p>
+
+<p>
+  <strong>Principal:</strong>
+  <%= @princpl_pay %>
+</p>
+
+<p>
+  <strong>Interest:</strong>
+  <%= @intrst %>
+</p>
+
+<p>
+  <strong>Total Payment:</strong>
+  <%= @total_pay %>
+</p>
+
+<p>
+  <strong>Ending Balance:</strong>
+  <%= @end_balance %>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%= link_to 'Edit', edit_detail_path(@detail) %> |
+<%= link_to 'Back', details_path %>

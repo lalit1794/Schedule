@@ -1,0 +1,2 @@
+class DetailTwo < ApplicationRecord
+end

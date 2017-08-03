@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170802122538) do
+ActiveRecord::Schema.define(version: 20170803100249) do
+
+  create_table "detail_threes", force: :cascade do |t|
+    t.float    "loan"
+    t.float    "term"
+    t.float    "rate"
+    t.date     "disburse_date"
+    t.date     "pay_strt_date"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "detail_twos", force: :cascade do |t|
+    t.float    "loan"
+    t.float    "term"
+    t.float    "rate"
+    t.date     "disburse_date"
+    t.date     "pay_strt_date"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "details", force: :cascade do |t|
     t.float    "loan"

@@ -1,16 +1,15 @@
-<%= form_for (@detail || @detail2 || @detail3) do |f| %>
-  <% if detail.errors.any? %>
+<%= form_for(detail_three) do |f| %>
+  <% if detail_three.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(detail.errors.count, "error") %> prohibited this detail from being saved:</h2>
+      <h2><%= pluralize(detail_three.errors.count, "error") %> prohibited this detail_three from being saved:</h2>
 
       <ul>
-      <% detail.errors.full_messages.each do |message| %>
+      <% detail_three.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
-
 
   <div class="field">
     <%= f.label :loan %>
@@ -38,8 +37,6 @@
   </div>
 
   <div class="actions">
-    <%= f.submit 'part1', :name => 'first' %>
-    <%= f.submit 'part2', :name => 'second' %>
-    <%= f.submit 'part3', :name => 'third' %>
+    <%= f.submit %>
   </div>
 <% end %>

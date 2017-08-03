@@ -1,0 +1,2 @@
+class DetailThree < ApplicationRecord
+end

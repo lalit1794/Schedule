@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Detail Twos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Loan</th>
+      <th>Term</th>
+      <th>Rate</th>
+      <th>Disburse date</th>
+      <th>Pay strt date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @detail_twos.each do |detail_two| %>
+      <tr>
+        <td><%= detail_two.loan %></td>
+        <td><%= detail_two.term %></td>
+        <td><%= detail_two.rate %></td>
+        <td><%= detail_two.disburse_date %></td>
+        <td><%= detail_two.pay_strt_date %></td>
+        <td><%= link_to 'Show', detail_two %></td>
+        <td><%= link_to 'Edit', edit_detail_two_path(detail_two) %></td>
+        <td><%= link_to 'Destroy', detail_two, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Detail Two', new_detail_two_path %>

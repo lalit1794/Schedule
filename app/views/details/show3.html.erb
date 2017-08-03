@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+
+<table class="table table-hover">
+  <tr>
+    <th>Date</th>
+    <th>Previous Balance</th> 
+    <th>Principal Payment</th>
+    <th>Interest</th>
+    <th>Total Payment</th>
+    <th>Ending Balance</th>
+  </tr>
+
+  
+    <% for i in 0..(@detail.term-1) do%>
+      <tr>
+        <td><%= @dte[i].strftime('%m/%d/%Y') %></td>
+        <td><%= @pb[i] %></td> 
+        <td><%= @pp[i] %></td>
+        <td><%= @intp[i] %></td>
+        <td><%= @tp[i] %></td> 
+        <td><%= @eb[i] %></td>
+      </tr> 
+    <% end %>
+  
+</table>
+
+
+
+
+
+
+
+
+<%= link_to 'Edit', edit_detail_path(@detail) %> |
+<%= link_to 'Back', details_path %>

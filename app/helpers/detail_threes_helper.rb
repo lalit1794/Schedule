@@ -1,0 +1,2 @@
+module DetailThreesHelper
+end

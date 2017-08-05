@@ -1,2 +1,0 @@
-class DetailThree < ApplicationRecord
-end

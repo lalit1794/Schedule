@@ -10,60 +10,46 @@ class DetailsController < ApplicationController
   # GET /details/1
   # GET /details/1.json
   def show
-    @date = @detail.pay_strt_date-1.month
-  
-    @end_balance = @detail.loan
-    @rate_per_period = @detail.rate / (100 * @detail.term)
     @period = @detail.term
+    @date = @detail.pay_strt_date-1.month
+    @rate_per_period = @detail.rate / (100 * @detail.term)
+    df = (@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1) # df = 1/discount factor
+    tpm = @detail.loan * df
+    intm = @rate_per_period * @detail.loan
     @dte, @pb, @pp, @intp, @tp, @eb  = [], [], [], [], [], []
-    for i in 1..(@detail.term) do
-      @pb.push(@prev_balance = (@end_balance).round(2))
-      @dte.push(@date = @date+1.month)
-      @intp.push(@intrst = (@prev_balance * @rate_per_period).round(2))
-      @tp.push(@total_pay =  (@prev_balance * ((@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1))).round(2))
-      @pp.push(@princpl_pay = (@total_pay - @intrst).round(2))
-      @eb.push(@end_balance = (@prev_balance - @princpl_pay).round(2))
-      @period = @period - 1
+
+    if @detail.disburse_date.month == 1 || 3 || 5 || 7 || 8 || 10 || 12
+      t = -1
+    elsif @detail.disburse_date.month == 2
+      y = @detail.disburse_date.year
+      t = (y%4==0 && y%100!=0 || y%400==0) ? 1 : 2
+    else
+      t = 0    
     end
+    d = ((@detail.pay_strt_date - @detail.disburse_date).to_int) + t
+    intd = (intm * d ) / 30
+    tpd = tpm - intm + intd
+    @tpeq = (tpd + (@detail.term-1)*tpm) / @detail.term
+
+    @prev_balance = @detail.loan
+    for i in 1..(@detail.term) do
+      @pb.push(@prev_balance.round(2))
+      @tp.push(@tpeq.round(2))
+      @period = @detail.term - i
+      disfac = (@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1)
+      @eb.push(@end_balance = (@tpeq / disfac).round(2))
+      @pp.push(@princpl_pay = (@prev_balance - @end_balance).round(2))
+      @intp.push(@intrst = (@tpeq - @princpl_pay).round(2))
+      @dte.push(@date = @date+1.month)
+      @prev_balance = @end_balance
+    end  
   end
 
 
-def show2
-    @date = @detail.pay_strt_date-1.month
   
-    @end_balance = @detail.loan
-    @rate_per_period = @detail.rate / (100 * @detail.term)
-    @period = @detail.term
-    @dte, @pb, @pp, @intp, @tp, @eb  = [], [], [], [], [], []
-    for i in 1..(@detail.term) do
-      @pb.push(@prev_balance = (@end_balance).round(2))
-      @dte.push(@date = @date+1.month)
-      @intp.push(@intrst = (@prev_balance * @rate_per_period).round(2))
-      @tp.push(@total_pay =  (@prev_balance * ((@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1))).round(2))
-      @pp.push(@princpl_pay = (@total_pay - @intrst).round(2))
-      @eb.push(@end_balance = (@prev_balance - @princpl_pay).round(2))
-      @period = @period - 1
-    end
-  end
 
 
-
-def show3
-    @date = @detail.pay_strt_date-1.month
-  
-    @end_balance = @detail.loan
-    @rate_per_period = @detail.rate / (100 * @detail.term)
-    @period = @detail.term
-    @dte, @pb, @pp, @intp, @tp, @eb  = [], [], [], [], [], []
-    for i in 1..(@detail.term) do
-      @pb.push(@prev_balance = (@end_balance).round(2))
-      @dte.push(@date = @date+1.month)
-      @intp.push(@intrst = (@prev_balance * @rate_per_period).round(2))
-      @tp.push(@total_pay =  (@prev_balance * ((@rate_per_period*((1+@rate_per_period)**@period)) / (((1+@rate_per_period)**@period) - 1))).round(2))
-      @pp.push(@princpl_pay = (@total_pay - @intrst).round(2))
-      @eb.push(@end_balance = (@prev_balance - @princpl_pay).round(2))
-      @period = @period - 1
-    end
+  def home
   end
 
 
@@ -86,8 +72,6 @@ def show3
   # POST /details
   # POST /details.json
   def create
-    @detail = Detail.new(params[:name])
-    if params[:first]
       @detail = Detail.new(detail_params)
 
       respond_to do |format|
@@ -99,32 +83,6 @@ def show3
           format.json { render json: @detail.errors, status: :unprocessable_entity }
         end
       end  
-    elsif params[:second]
-      @detail2 = Detail.new(detail_params)
-
-      respond_to do |format|
-        if @detail2.save           
-          format.html { redirect_to @detail2, notice: 'Detail was successfully created.' }
-          format.json { render :show, status: :created, location: @detail2 }
-        else
-          format.html { render :new }
-          format.json { render json: @detail.errors, status: :unprocessable_entity }
-        end
-      end
-      
-    else
-      @detail = Detail.new(detail_params)
-      @detail.save  
-      respond_to do |format|
-        if @detail.save           
-          format.html { redirect_to :action=>'show3', notice: 'Detail was successfully created.' }
-          format.json { render :show, status: :created, location: @detail }
-        else
-          format.html { render :new }
-          format.json { render json: @detail.errors, status: :unprocessable_entity }
-        end
-      end
-    end
   end
 
 

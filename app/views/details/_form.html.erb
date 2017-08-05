@@ -1,4 +1,4 @@
-<%= form_for (@detail || @detail2 || @detail3) do |f| %>
+<%= form_for(@detail) do |f| %>
   <% if detail.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(detail.errors.count, "error") %> prohibited this detail from being saved:</h2>
@@ -38,8 +38,6 @@
   </div>
 
   <div class="actions">
-    <%= f.submit 'part1', :name => 'first' %>
-    <%= f.submit 'part2', :name => 'second' %>
-    <%= f.submit 'part3', :name => 'third' %>
+    <%= f.submit %>
   </div>
 <% end %>

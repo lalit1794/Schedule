@@ -15,11 +15,11 @@
     <% for i in 0..(@detail_two.term-1) do%>
       <tr>
         <td><%= @dte[i].strftime('%m/%d/%Y') %></td>
-        <td><%= @pb[i] %></td> 
-        <td><%= @pp[i] %></td>
-        <td><%= @intp[i] %></td>
-        <td><%= @tp[i] %></td> 
-        <td><%= @eb[i] %></td>
+        <td><%= '%.2f' % @pb[i] %></td> 
+        <td><%= '%.2f' % @pp[i] %></td>
+        <td><%= '%.2f' % @intp[i] %></td>
+        <td><%= '%.2f' % @tp[i] %></td> 
+        <td><%= '%.2f' % @eb[i] %></td>
       </tr> 
     <% end %>
   
@@ -33,4 +33,4 @@
 
 
 <%= link_to 'Edit', edit_detail_two_path(@detail_two) %> |
-<%= link_to 'Back', detail_twos_path %>
+<%= link_to 'Back', root_path %>
